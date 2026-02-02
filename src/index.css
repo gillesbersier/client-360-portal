@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 260 30% 8%;
+    --foreground: 270 20% 95%;
+
+    --card: 260 25% 12%;
+    --card-foreground: 270 20% 95%;
+
+    --popover: 260 25% 12%;
+    --popover-foreground: 270 20% 95%;
+
+    --primary: 280 70% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 260 25% 18%;
+    --secondary-foreground: 270 20% 95%;
+
+    --muted: 260 20% 15%;
+    --muted-foreground: 260 15% 60%;
+
+    --accent: 290 80% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 260 20% 20%;
+    --input: 260 20% 20%;
+    --ring: 280 70% 55%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 260 30% 10%;
+    --sidebar-foreground: 270 20% 95%;
+    --sidebar-primary: 280 70% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 260 25% 18%;
+    --sidebar-accent-foreground: 270 20% 95%;
+    --sidebar-border: 260 20% 20%;
+    --sidebar-ring: 280 70% 55%;
+
+    /* Platform specific colors */
+    --platform-purple: 280 70% 55%;
+    --platform-purple-light: 290 80% 70%;
+    --platform-purple-dark: 260 50% 20%;
+  }
+
+  .dark {
+    --background: 260 30% 8%;
+    --foreground: 270 20% 95%;
+
+    --card: 260 25% 12%;
+    --card-foreground: 270 20% 95%;
+
+    --popover: 260 25% 12%;
+    --popover-foreground: 270 20% 95%;
+
+    --primary: 280 70% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 260 25% 18%;
+    --secondary-foreground: 270 20% 95%;
+
+    --muted: 260 20% 15%;
+    --muted-foreground: 260 15% 60%;
+
+    --accent: 290 80% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 260 20% 20%;
+    --input: 260 20% 20%;
+    --ring: 280 70% 55%;
+
+    --sidebar-background: 260 30% 10%;
+    --sidebar-foreground: 270 20% 95%;
+    --sidebar-primary: 280 70% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 260 25% 18%;
+    --sidebar-accent-foreground: 270 20% 95%;
+    --sidebar-border: 260 20% 20%;
+    --sidebar-ring: 280 70% 55%;
+
+    /* Platform specific colors */
+    --platform-purple: 280 70% 55%;
+    --platform-purple-light: 290 80% 70%;
+    --platform-purple-dark: 260 50% 20%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
