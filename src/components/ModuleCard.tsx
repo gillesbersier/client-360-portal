@@ -8,9 +8,10 @@ interface ModuleCardProps {
   isActive?: boolean;
   isDimmed?: boolean;
   onClick?: (e: React.MouseEvent) => void;
+  style?: React.CSSProperties;
 }
 
-const ModuleCard = ({ title, icon: Icon, angle, radius, isActive, isDimmed, onClick }: ModuleCardProps) => {
+const ModuleCard = ({ title, icon: Icon, angle, radius, isActive, isDimmed, onClick, style }: ModuleCardProps) => {
   // Calculate position based on angle
   const angleRad = (angle - 90) * (Math.PI / 180);
   const x = Math.cos(angleRad) * radius;
@@ -29,6 +30,7 @@ const ModuleCard = ({ title, icon: Icon, angle, radius, isActive, isDimmed, onCl
         transform: `translate(${x}px, ${y}px) translate(-50%, -50%)`,
         left: '50%',
         top: '50%',
+        ...style // Spread additional styles (opacity, transition)
       }}
     >
       <Icon className={`w-6 h-6 mb-1 ${isActive ? 'text-platform-purple-dark' : 'text-white'}`} />

@@ -26,11 +26,12 @@ const modules = [
 
 const RadialDashboard = () => {
   const [activeModule, setActiveModule] = useState<string | null>(null);
+  const [isExpanded, setIsExpanded] = useState(true);
 
-  const moduleRadius = 240; // Slightly increased from 220 to give more breathing room
-  const lineInnerRadius = 100; // Increased from 80 to match w-48 (192px/2 = 96px + border)
-  const lineOuterRadius = 180; // Increased from 160
-  const svgSize = 650; // Increased SVG size to avoid clipping
+  const moduleRadius = 240;
+  const lineInnerRadius = 100;
+  const lineOuterRadius = 180;
+  const svgSize = 650;
   const center = svgSize / 2;
 
   const handleModuleClick = (title: string, e: React.MouseEvent) => {
@@ -39,7 +40,14 @@ const RadialDashboard = () => {
   };
 
   const handleBackgroundClick = () => {
-    setActiveModule(null);
+    if (activeModule) {
+      setActiveModule(null);
+    }
+  };
+
+  const toggleExpansion = () => {
+    setIsExpanded(!isExpanded);
+    setActiveModule(null); // Reset active state when toggling
   };
 
   return (
@@ -47,9 +55,9 @@ const RadialDashboard = () => {
       className="relative w-full max-w-[650px] aspect-square mx-auto"
       onClick={handleBackgroundClick}
     >
-      {/* SVG for connection lines */}
+      {/* SVG for connection lines - Only visible when expanded */}
       <svg
-        className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${activeModule ? 'opacity-20' : 'opacity-100'}`}
+        className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${isExpanded ? (activeModule ? 'opacity-20' : 'opacity-100') : 'opacity-0'}`}
         viewBox={`0 0 ${svgSize} ${svgSize}`}
         style={{ overflow: 'visible' }}
       >
@@ -77,9 +85,16 @@ const RadialDashboard = () => {
               title={module.title}
               icon={module.icon}
               angle={module.angle}
-              radius={moduleRadius}
+              // Pass 0 radius when collapsed so they move to center
+              radius={isExpanded ? moduleRadius : 0}
               isActive={isActive}
               isDimmed={isDimmed}
+              // Hide and disable pointer events when collapsed
+              style={{
+                opacity: isExpanded ? (isDimmed ? 0.2 : 1) : 0,
+                pointerEvents: isExpanded ? 'auto' : 'none',
+                transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
               onClick={(e) => handleModuleClick(module.title, e)}
             />
           );
@@ -91,6 +106,7 @@ const RadialDashboard = () => {
         <CustomerHub
           name="Sarah J. Johnson"
           company="TechCorp Inc."
+          onToggle={toggleExpansion}
         />
       </div>
     </div>

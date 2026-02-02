@@ -7,13 +7,15 @@ interface CustomerHubProps {
   name: string;
   company: string;
   avatarUrl?: string; // Initial/default avatar
+  onToggle?: () => void;
 }
 
-const CustomerHub = ({ name, company, avatarUrl: initialAvatarUrl }: CustomerHubProps) => {
+const CustomerHub = ({ name, company, avatarUrl: initialAvatarUrl, onToggle }: CustomerHubProps) => {
   const [avatarPreview, setAvatarPreview] = useState<string | undefined>(initialAvatarUrl);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleAvatarClick = () => {
+  const handleAvatarClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     fileInputRef.current?.click();
   };
 
@@ -54,7 +56,10 @@ const CustomerHub = ({ name, company, avatarUrl: initialAvatarUrl }: CustomerHub
       <div className="absolute w-56 h-56 rounded-full bg-platform-purple/20 animate-pulse pointer-events-none" />
 
       {/* Main circle with border - Increased size */}
-      <div className="relative w-48 h-48 rounded-full bg-platform-purple-dark flex flex-col items-center justify-center shadow-lg shadow-platform-purple/30 z-10">
+      <div
+        className="relative w-48 h-48 rounded-full bg-platform-purple-dark flex flex-col items-center justify-center shadow-lg shadow-platform-purple/30 z-10 cursor-pointer hover:bg-platform-purple-dark/90 transition-colors"
+        onClick={onToggle}
+      >
 
         {/* Avatar Container with Hover Effect */}
         <div
