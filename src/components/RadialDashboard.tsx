@@ -11,7 +11,7 @@ import {
 import CustomerHub from "./CustomerHub";
 import ModuleCard from "./ModuleCard";
 import ConnectionLine from "./ConnectionLine";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const modules = [
   { title: "Leads / Opportunités", icon: TrendingUp, angle: 0 },
@@ -50,9 +50,48 @@ const RadialDashboard = () => {
     setActiveModule(null); // Reset active state when toggling
   };
 
+  /* Drag & Drop State */
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleDragStart = (e: React.MouseEvent) => {
+    // Only drag if collapsed (modules hidden)
+    if (!isExpanded) {
+      setIsDragging(true);
+    }
+  };
+
+  // We need useEffect for window listeners to handle smooth drag outside the element
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      setPosition(prev => ({
+        x: prev.x + e.movementX,
+        y: prev.y + e.movementY
+      }));
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging]);
+
   return (
     <div
-      className="relative w-full max-w-[650px] aspect-square mx-auto"
+      className="relative w-full max-w-[650px] aspect-square mx-auto cursor-default"
+      style={{
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        transition: isDragging ? 'none' : 'transform 0.3s ease-out' // Smooth reset if needed, instant drag
+      }}
       onClick={handleBackgroundClick}
     >
       {/* SVG for connection lines - Only visible when expanded */}
@@ -102,11 +141,16 @@ const RadialDashboard = () => {
       </div>
 
       {/* Central customer hub */}
-      <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${activeModule ? 'opacity-20' : 'opacity-100'}`}>
+      {/* If collapsed (!isExpanded), this becomes the drag handle */}
+      <div
+        className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${activeModule ? 'opacity-20' : 'opacity-100'}`}
+        onMouseDown={!isExpanded ? handleDragStart : undefined}
+      >
         <CustomerHub
           name="Sarah J. Johnson"
           company="TechCorp Inc."
           onToggle={toggleExpansion}
+          isDraggable={!isExpanded}
         />
       </div>
     </div>

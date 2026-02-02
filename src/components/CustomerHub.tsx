@@ -8,15 +8,19 @@ interface CustomerHubProps {
   company: string;
   avatarUrl?: string; // Initial/default avatar
   onToggle?: () => void;
+  isDraggable?: boolean;
 }
 
-const CustomerHub = ({ name, company, avatarUrl: initialAvatarUrl, onToggle }: CustomerHubProps) => {
+const CustomerHub = ({ name, company, avatarUrl: initialAvatarUrl, onToggle, isDraggable }: CustomerHubProps) => {
   const [avatarPreview, setAvatarPreview] = useState<string | undefined>(initialAvatarUrl);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleAvatarClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    fileInputRef.current?.click();
+    // Only allow file upload if NOT draggable (i.e. expanded)
+    if (!isDraggable) {
+      fileInputRef.current?.click();
+    }
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
